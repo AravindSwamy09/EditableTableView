@@ -35,6 +35,7 @@ class ViewController: UIViewController {
         toDoItem.append(ToDoItem(text: "Catch up with mom"))
         toDoItem.append(ToDoItem(text: "Get a hair cut"))
     
+        tableView.backgroundColor = .black
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
         
     }
@@ -60,6 +61,7 @@ extension ViewController:UITableViewDataSource{
         
         let item = toDoItem[indexPath.row]
         
+        cell.selectionStyle =  .none
         cell.textLabel?.text = item.text
         cell.textLabel?.backgroundColor = .clear
         
@@ -87,6 +89,14 @@ extension ViewController : UITableViewDelegate{
         
         cell.backgroundColor = colorForIndex(index: indexPath.row)
         
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let alert = UIAlertController(title: "Alert", message: "Some message", preferredStyle: .alert)
+        
+        let ok = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        alert.addAction(ok)
+        present(alert, animated: false, completion: nil)
     }
     
 }

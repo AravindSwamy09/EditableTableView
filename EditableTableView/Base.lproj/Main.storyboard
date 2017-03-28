@@ -21,7 +21,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="iZp-xy-JMG">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="55" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="iZp-xy-JMG">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -32,7 +32,7 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="iZp-xy-JMG" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="04u-14-bUN"/>
+                            <constraint firstItem="iZp-xy-JMG" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Lgc-x4-63I"/>
                             <constraint firstItem="iZp-xy-JMG" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="MTg-Id-Z7Z"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="iZp-xy-JMG" secondAttribute="bottom" id="Sip-iT-xMq"/>
                             <constraint firstAttribute="trailing" secondItem="iZp-xy-JMG" secondAttribute="trailing" id="yDb-l1-TRe"/>
@@ -44,6 +44,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="24.800000000000001" y="36.431784107946029"/>
         </scene>
     </scenes>
 </document>
