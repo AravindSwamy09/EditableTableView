@@ -35,12 +35,14 @@ class ViewController: UIViewController {
         toDoItem.append(ToDoItem(text: "Catch up with mom"))
         toDoItem.append(ToDoItem(text: "Get a hair cut"))
     
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
         
     }
     
 
 }
+
+//MARK: DataSource
 
 extension ViewController:UITableViewDataSource{
     
@@ -54,15 +56,39 @@ extension ViewController:UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
         
         let item = toDoItem[indexPath.row]
         
         cell.textLabel?.text = item.text
+        cell.textLabel?.backgroundColor = .clear
         
         return cell
         
     }
     
 }
+
+//MARK: Delegates
+
+extension ViewController : UITableViewDelegate{
+    
+    func colorForIndex(index:Int) -> UIColor {
+        
+        let itemCount = toDoItem.count - 1
+        
+        let value = (CGFloat(index) / CGFloat(itemCount)) * 0.6
+        
+        return UIColor(red: 1.0, green: value, blue: 0.0, alpha: 1.0)
+        
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        cell.backgroundColor = colorForIndex(index: indexPath.row)
+        
+    }
+    
+}
+
 
