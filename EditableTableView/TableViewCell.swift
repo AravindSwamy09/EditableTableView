@@ -35,6 +35,8 @@ class TableViewCell: UITableViewCell {
     var originalCenter = CGPoint()
     var deleteOnDragRelease = false,completeOnDragRelease = false
     
+    var tickLabel:UILabel!, crossLabel:UILabel!
+    
     let label : StrikeThroughText
     var itemCompleteLayer = CALayer()
     
@@ -70,6 +72,16 @@ class TableViewCell: UITableViewCell {
         
         layer.insertSublayer(gradientLayet, at: 0)
         
+        //Tick and Cross labels for context cues
+        tickLabel = createCueLabel()
+        tickLabel.text = "\u{2713}"
+        tickLabel.textAlignment = .right
+        addSubview(tickLabel)
+        crossLabel = createCueLabel()
+        crossLabel.text = "\u{2717}"
+        crossLabel.textAlignment = .left
+        addSubview(crossLabel)
+        
         //Add a layer that renders a green background when an item is complete
         itemCompleteLayer = CALayer(layer: layer)
         itemCompleteLayer.backgroundColor = UIColor(red: 0.0, green: 0.6, blue: 0.0, alpha: 1.0).cgColor
@@ -91,6 +103,7 @@ class TableViewCell: UITableViewCell {
     }
     
     let kLabelLeftMargin:CGFloat = 15.0
+    let kUICuesMargin:CGFloat = 10.0,kUICueswidth:CGFloat = 50.0
     
     
     override func layoutSubviews() {
@@ -101,8 +114,21 @@ class TableViewCell: UITableViewCell {
         itemCompleteLayer.frame = bounds
         label.frame = CGRect(x: kLabelLeftMargin, y: 0, width: bounds.size.width - kLabelLeftMargin, height: bounds.size.height)
         
+        tickLabel.frame = CGRect(x: -kUICueswidth - kUICuesMargin, y: 0, width: kUICueswidth, height: bounds.size.height)
+        crossLabel.frame = CGRect(x: bounds.size.width + kUICuesMargin, y: 0, width: kUICueswidth, height: bounds.size.height)
+        
+        
     }
 
+    //Utility method for creating the contextual cues.
+    func createCueLabel() -> UILabel {
+        let label = UILabel(frame: CGRect.null)
+        label.textColor = .white
+        label.font = UIFont.boldSystemFont(ofSize: 32.0)
+        label.backgroundColor = .clear
+        return label
+    }
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
@@ -125,6 +151,15 @@ class TableViewCell: UITableViewCell {
             //Has the user dragged the item far to initiate a delete/complete?
             deleteOnDragRelease = frame.origin.x < -frame.size.width/2.0
             completeOnDragRelease = frame.origin.x > frame.size.width/2.0
+            
+            //Fade contextual cues
+            let cueAlpha = fabs(frame.origin.x)/(frame.size.width/2.0)
+            tickLabel.alpha = cueAlpha
+            crossLabel.alpha = cueAlpha
+            //Indicate when the user has pulled the item far enough to invoke the given action
+            tickLabel.textColor = completeOnDragRelease ? .green : .white
+            crossLabel.textColor = deleteOnDragRelease ? .red : .white
+            
         }
         //3
         if recognizer.state == .ended {
