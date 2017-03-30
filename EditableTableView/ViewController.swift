@@ -81,8 +81,8 @@ extension ViewController:UITableViewDataSource{
         let item = toDoItems[indexPath.row]
         
         cell.selectionStyle =  .none
-        cell.textLabel?.text = item.text
-        cell.textLabel?.backgroundColor = .clear
+//        cell.textLabel?.text = item.text
+//        cell.textLabel?.backgroundColor = .clear
         cell.delegate = self
         cell.todoItem = item
         
