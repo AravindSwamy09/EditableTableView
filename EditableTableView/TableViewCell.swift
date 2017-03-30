@@ -8,8 +8,23 @@
 
 import UIKit
 
+//A protocol that the TableViewCell uses to inform its delegate of state change
+protocol TableViewCellDelegate{
+    
+    //Indicates that the given item is deleted.
+    func toDoItemDeleted(toDoItem:ToDoItem)
+    
+}
+
 class TableViewCell: UITableViewCell {
 
+    //The object that acts as delete for this cell.
+    var delegate : TableViewCellDelegate?
+    
+    //The item that this cell renders.
+    var todoItem : ToDoItem?
+    
+    
     let gradientLayet = CAGradientLayer()
     var originalCenter = CGPoint()
     var deleteOnDragRelease = false
@@ -86,6 +101,13 @@ class TableViewCell: UITableViewCell {
             if !deleteOnDragRelease {
                 //If the item is not being deleted, snap back to the original location
                 UIView.animate(withDuration: 0.2, animations: {self.frame = originalFrame})
+            }
+            
+            if deleteOnDragRelease {
+                if delegate != nil && todoItem != nil {
+                    //Notify the delegate that this item should be deleted.
+                    delegate!.toDoItemDeleted(toDoItem: todoItem!)
+                }
             }
             
         }
