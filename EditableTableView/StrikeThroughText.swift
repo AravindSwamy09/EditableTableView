@@ -10,7 +10,8 @@ import UIKit
 import QuartzCore
 
 //A UILabel subclass that can optionally have a strikethrough.
-class StrikeThroughText: UILabel {
+//Replacing UILabel with UITextField for editing items
+class StrikeThroughText: UITextField {
 
     let strikeThroughLayer : CALayer
     
@@ -49,7 +50,7 @@ class StrikeThroughText: UILabel {
     
     func resizeStrikeThrough() {
         
-        let textSize = text?.size(attributes: [NSFontAttributeName:font])
+        let textSize = text?.size(attributes: [NSFontAttributeName:font!])
         strikeThroughLayer.frame = CGRect(x: 0, y: bounds.size.height/2, width: (textSize?.width)!, height: strikeOutThickness)
         
     }

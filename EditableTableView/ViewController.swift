@@ -40,7 +40,7 @@ class ViewController: UIViewController,TableViewCellDelegate {
         
     }
     
-    //MARK: - TableViewCellDelegate
+    //MARK: - TableViewCellDelegate Methods
     
     func toDoItemDeleted(toDoItem: ToDoItem) {
         
@@ -96,9 +96,38 @@ class ViewController: UIViewController,TableViewCellDelegate {
         
     }
 
+    func cellDidBeginEditing(editingCell: TableViewCell) {
+        
+        let editingOffSet = tableView.contentOffset.y - editingCell.frame.origin.y as CGFloat
+        let visibleCells = tableView.visibleCells as! [TableViewCell]
+        for cell in visibleCells{
+            UIView.animate(withDuration: 0.3, animations: { () in
+                cell.transform = CGAffineTransform(translationX: 0, y: editingOffSet)
+            })
+            if cell != editingCell {
+                cell.alpha = 0.3
+            }
+        }
+        
+    }
+    
+    func cellDidEndEditing(editingCell: TableViewCell) {
+        
+        let visibleCells = tableView.visibleCells as! [TableViewCell]
+        for cell:TableViewCell in visibleCells {
+            UIView.animate(withDuration: 0.3, animations: { () in
+                cell.transform = CGAffineTransform.identity
+                if cell != editingCell{
+                    cell.alpha = 1.0
+                }
+            })
+        }
+        
+    }
+    
 }
 
-//MARK: DataSource
+//MARK: - DataSource
 
 extension ViewController:UITableViewDataSource{
     
@@ -128,7 +157,7 @@ extension ViewController:UITableViewDataSource{
     
 }
 
-//MARK: Delegates
+//MARK: - Delegates
 
 extension ViewController : UITableViewDelegate{
     

@@ -13,6 +13,10 @@ protocol TableViewCellDelegate{
     
     //Indicates that the given item is deleted.
     func toDoItemDeleted(toDoItem:ToDoItem)
+    //Indicates that the edit processs has begun for the given cell
+    func cellDidBeginEditing(editingCell:TableViewCell)
+    //Indicates that the edit process has committed for the given cell
+    func cellDidEndEditing(editingCell:TableViewCell)
     
 }
 
@@ -56,6 +60,9 @@ class TableViewCell: UITableViewCell {
         label.backgroundColor = .clear
         
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        label.delegate  = self
+        label.contentVerticalAlignment = .center
         
         addSubview(label)
         
@@ -205,4 +212,41 @@ class TableViewCell: UITableViewCell {
     }
     
 
+}
+
+//MARK: - UITextField Delegate Methods
+
+extension TableViewCell:UITextFieldDelegate{
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        //Close the keyboard on enter
+        textField.resignFirstResponder()
+        return false
+    }
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        //Disable Editing of completed to-do items
+        if todoItem != nil {
+            return !todoItem!.completed
+        }
+        return false
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if delegate != nil {
+            delegate?.cellDidBeginEditing(editingCell: self)
+        }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if todoItem != nil {
+            todoItem!.text = textField.text!
+        }
+        
+        if delegate != nil {
+            delegate?.cellDidEndEditing(editingCell: self)
+        }
+        
+    }
+    
 }
