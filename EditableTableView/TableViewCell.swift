@@ -46,7 +46,7 @@ class TableViewCell: UITableViewCell {
     
     
     
-    
+    //MARK: - Init Method
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
@@ -142,7 +142,7 @@ class TableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    //MARK: Horizontal Pan Geasture methods
+    //MARK: - Horizontal Pan Geasture methods
     func handlePan(recognizer:UIPanGestureRecognizer) {
         // 1
         if recognizer.state == .began {
@@ -210,7 +210,7 @@ class TableViewCell: UITableViewCell {
         }
         return false
     }
-    
+
 
 }
 
@@ -240,7 +240,11 @@ extension TableViewCell:UITextFieldDelegate{
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if todoItem != nil {
-            todoItem!.text = textField.text!
+//            if textField.text == "" {
+//                delegate?.toDoItemDeleted(toDoItem: todoItem!)
+//            }else{
+                todoItem!.text = textField.text!
+//            }
         }
         
         if delegate != nil {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController,TableViewCellDelegate {
+class ViewController: UIViewController,TableViewCellDelegate,UIScrollViewDelegate {
 
     @IBOutlet var tableView: UITableView!
     
@@ -121,6 +121,71 @@ class ViewController: UIViewController,TableViewCellDelegate {
                     cell.alpha = 1.0
                 }
             })
+        }
+        if editingCell.todoItem?.text == "" {
+            toDoItemDeleted(toDoItem: editingCell.todoItem!)
+        }
+    }
+    
+    //MARK: - UIScrollViewDelegate Methods
+    let placeHolderCell = TableViewCell(style: .default, reuseIdentifier: "Cell")
+    
+    //Indocates the state of the behavior
+    var pullDownInProgress = false
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        
+        //This behavior starts when a user pulls down while at the top of the table
+        pullDownInProgress = scrollView.contentOffset.y <= 0.0
+        placeHolderCell.backgroundColor = .red
+        if pullDownInProgress {
+            //Add the placeholder
+            tableView.insertSubview(placeHolderCell, at: 0)
+        }
+        
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        let scrollViewContentOffSetY = scrollView.contentOffset.y
+        
+        if pullDownInProgress && scrollView.contentOffset.y <= 0.0 {
+            placeHolderCell.frame = CGRect(x: 0, y: -tableView.rowHeight, width: tableView.frame.size.width, height: tableView.rowHeight)
+            placeHolderCell.label.text = -scrollViewContentOffSetY > tableView.rowHeight ? "Release to add item" : "Pull to add item"
+            placeHolderCell.alpha = min(1.0, -scrollViewContentOffSetY/tableView.rowHeight)
+        }else{
+            pullDownInProgress = false
+        }
+        
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        
+        //Check whether the user pulled down far enough
+        if pullDownInProgress && -scrollView.contentOffset.y > tableView.rowHeight {
+            //TODO - Add a new item
+            toDoItemAdded()
+        }
+        pullDownInProgress = false
+        placeHolderCell.removeFromSuperview()
+    }
+    
+    //MARK: - Add,Delete,Edit methods
+    func toDoItemAdded() {
+        
+        let toDoItem = ToDoItem(text: "")
+        toDoItems.insert(toDoItem, at: 0)
+        tableView.reloadData()
+        
+        //Enter edit mode
+        var editCell:TableViewCell
+        let visibleCells = tableView.visibleCells as! [TableViewCell]
+        for cell in visibleCells {
+            if cell.todoItem === toDoItem {
+                editCell = cell
+                editCell.label.becomeFirstResponder()
+                break
+            }
         }
         
     }
